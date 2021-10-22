@@ -1,0 +1,32 @@
+services:
+    aquafoo:
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+            args:
+                - GIT_USERNAME=${GIT_USERNAME}
+                - GIT_PERSONAL_ACCESS_TOKEN=${GIT_PERSONAL_ACCESS_TOKEN}
+        ports:
+            - "3050:80"
+        volumes:
+            - ./:/code
+        stdin_open: true
+        tty: true
+        depends_on:
+            - postgres
+        environment:
+            - POSTGRESQL_HOST=postgres
+            - GG_ENV=dev
+            - ConnectionStrings:AquaFoo=
+            - ConnectionStrings:IdentityProvider=
+        container_name: AquaFoo
+        
+    postgres:
+        image: postgres:12
+        ports:
+            - "5401:5432"
+        environment:
+            - POSTGRES_USER=admin
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=aquafoo
+        container_name: AquaFoo_DB

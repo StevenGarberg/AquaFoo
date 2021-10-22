@@ -1,2 +1,2 @@
 # AquaFoo
-An app for recording and tracking your aquariums.
+An app for recording and tracking your aquariums built with .NET 5, Blazor Server, Radzen, and PostgreSQL.

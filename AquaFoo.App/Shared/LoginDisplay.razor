@@ -1,0 +1,15 @@
+﻿@using System.Security.Claims
+<AuthorizeView>
+    <Authorized>
+        <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+        <form method="post" action="Identity/Account/LogOut">
+            <button type="submit" class="nav-link btn btn-link">Log out</button>
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <RadzenButton Click=@(args => OnClick("Identity/Account/Register")) Text="Register" Icon="account_circle" Style="margin-bottom: 20px; width: 150px" />
+        <RadzenButton Click=@(args => OnClick("Identity/Account/Login")) Text="Log In" Icon="account_circle" Style="margin-bottom: 20px; width: 150px" />
+        <a href="Identity/Account/Register">Register</a>
+        <a href="Identity/Account/Login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>

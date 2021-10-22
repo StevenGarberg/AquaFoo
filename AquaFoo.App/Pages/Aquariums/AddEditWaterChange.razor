@@ -1,0 +1,85 @@
+﻿@page "/aquariums/{AquariumId}/waterChanges/add"
+@page "/aquariums/{AquariumId}/waterChanges/{WaterChangeId}/edit"
+@attribute [Authorize]
+
+@using AquaFoo.App.Models
+@using AquaFoo.App.Constants
+
+@if (WaterChangeId == null)
+{
+    <h1>Add Water Change</h1>
+}
+else
+{
+    <h1>Edit Water Change<br/><small>ID: @WaterChangeId</small></h1>
+}
+<hr/>
+
+@if (loadFailed)
+{
+    <h1>ERROR</h1>
+    <h3>@exception.Message</h3>
+    <p>@exception.StackTrace</p>
+}
+else if (aquarium == null || waterChange == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenTemplateForm Data="@waterChange" Submit="@(async (WaterChange args) => { await Submit(); })">
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Details</legend>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Performed At"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenDatePicker style="width: 100%;" AllowClear="true" ShowTime="true" TValue="DateTime?" Data="AquariumConstants.PerformedAt" @bind-Value="waterChange.PerformedAt" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Unit of Measurement"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenDropDown style="width: 100%;" AllowClear="true" TValue="string" Data="AquariumConstants.WaterChangeMeasurement" @bind-Value="waterChange.WaterChangeMeasurement" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Amount Changed"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenNumeric style="width: 100%;" Name="WaterChangeAmount" @bind-Value="waterChange.WaterChangeAmount"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <hr/>
+                <fieldset>
+                    <legend>Misc.</legend>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Notes"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextArea style="width: 100%;" Name="Notes" @bind-Value="waterChange.Notes"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="row">
+                    <div class="col-md-12">
+                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Info" />
+                        <RadzenButton ButtonType="ButtonType.Button" Icon="cancel" Text="Cancel" Click="Cancel" ButtonStyle="ButtonStyle.Danger" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                
+            </div>
+        </div>
+    </RadzenTemplateForm>
+    <br/><br/>
+}

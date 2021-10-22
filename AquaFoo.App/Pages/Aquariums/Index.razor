@@ -1,0 +1,40 @@
+﻿@page "/aquariums"
+@attribute [Authorize]
+
+@using AquaFoo.App.Models
+
+<RadzenDialog />
+<RadzenNotification />
+
+<h1>Aquariums</h1>
+
+@if (loadFailed)
+{
+    <h1>ERROR</h1>
+    <h3>@exception.Message</h3>
+    <p>@exception.StackTrace</p>
+}
+else if (aquariums == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenButton Icon="add_circle_outline" style="margin-bottom: 10px" Text="Add New" Click="@Create" ButtonStyle="ButtonStyle.Info" />
+    <RadzenGrid @ref="grid" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterMode="FilterMode.Advanced"
+                AllowPaging="true" PageSize="10" AllowSorting="true" Data="@aquariums" TItem="Aquarium">
+        <Columns>
+            <RadzenGridColumn TItem="Aquarium" Property="Id" Title="ID" />
+            <RadzenGridColumn TItem="Aquarium" Property="Name" Title="Name"/>
+            <RadzenGridColumn TItem="Aquarium" Property="TankCapacity" Title="TankCapacity"/>
+            <RadzenGridColumn TItem="Aquarium" Property="CreatedAt" Title="Created At"/>
+            <RadzenGridColumn TItem="Aquarium" Property="UpdatedAt" Title="Updated At"/>
+            <RadzenGridColumn TItem="Aquarium" Title="Actions" Sortable="false" Filterable="false">
+                <Template Context="data">
+                    <RadzenButton Icon="mode_edit" style="margin-bottom: 10px" Click="@(_ => Edit(data.Id))" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Icon="delete" style="margin-bottom: 10px" Click="@(_ => Delete(data.Id))" ButtonStyle="ButtonStyle.Danger" />
+                </Template>
+            </RadzenGridColumn>
+        </Columns>
+    </RadzenGrid>
+}

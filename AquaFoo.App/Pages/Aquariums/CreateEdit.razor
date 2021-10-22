@@ -1,0 +1,165 @@
+﻿@page "/aquariums/add"
+@page "/aquariums/{Id}/edit"
+@attribute [Authorize]
+
+@using AquaFoo.App.Models
+@using AquaFoo.App.Constants
+
+@if (Id == null)
+{
+    <h1>Add Aquarium</h1>
+}
+else
+{
+    <h1>Edit Aquarium<br/><small>ID: @Id</small></h1>
+}
+<hr/>
+
+@if (loadFailed)
+{
+    <h1>ERROR</h1>
+    <h3>@exception.Message</h3>
+    <p>@exception.StackTrace</p>
+}
+else if (aquarium == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenTemplateForm Data="@aquarium" Submit="@(async (Aquarium args) => { await Submit(); })">
+        <div class="row">
+            <div class="col-md-6">
+                <fieldset>
+                    <legend>Details</legend>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Name"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextBox style="width: 100%;" Name="Name" @bind-Value="aquarium.Name"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Water Type"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenDropDown  style="width: 100%;" AllowClear="true" TValue="string" Data="AquariumConstants.WaterTypes" @bind-Value="aquarium.WaterType" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Unit of Measurement"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenDropDown  style="width: 100%;" AllowClear="true" TValue="string" Data="AquariumConstants.TankCapacityUnits" @bind-Value="aquarium.TankCapacityUnit" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Tank Capacity"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenNumeric Placeholder="10" style="width: 100%;" Name="Gallons" @bind-Value="aquarium.TankCapacity"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <hr/>
+                <fieldset>
+                    <legend>Measurements</legend>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Unit of Measurement"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenDropDown  style="width: 100%;" AllowClear="true" TValue="string" Data="AquariumConstants.TankMeasurementUnits" @bind-Value="aquarium.TankMeasurementUnit" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Length"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenNumeric style="width: 100%;" TValue="float?" Placeholder="0.0" Step="0.1" @bind-Value="aquarium.Length" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Width"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenNumeric style="width: 100%;" TValue="float?" Placeholder="0.0" Step="0.1" @bind-Value="aquarium.Width" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Height"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenNumeric style="width: 100%;" TValue="float?" Placeholder="0.0" Step="0.1" @bind-Value="aquarium.Height" />
+                        </div>
+                    </div>
+                </fieldset>
+                <hr/>
+                <fieldset>
+                    <legend>Setup</legend>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Lighting"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextBox style="width: 100%;" Name="Lighting" @bind-Value="aquarium.Lighting"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Heater"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextBox style="width: 100%;" Name="Heater" @bind-Value="aquarium.Heater"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Filtration"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextBox style="width: 100%;" Name="Filtration" @bind-Value="aquarium.Filtration"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Substrate"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextBox style="width: 100%;" Name="Substrate" @bind-Value="aquarium.Substrate"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <hr/>
+                <fieldset>
+                    <legend>Misc.</legend>
+                    <div class="row mb-3">
+                        <div class="col-md-4 align-items-center d-flex">
+                            <RadzenLabel Text="Notes"/>
+                        </div>
+                        <div class="col-md-8">
+                            <RadzenTextArea style="width: 100%;" Name="Notes" @bind-Value="aquarium.Notes"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="row">
+                    <div class="col-md-12">
+                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Save" ButtonStyle="ButtonStyle.Info" />
+                        <RadzenButton ButtonType="ButtonType.Button" Icon="cancel" Text="Cancel" Click="Cancel" ButtonStyle="ButtonStyle.Danger" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                
+            </div>
+        </div>
+    </RadzenTemplateForm>
+    <br/><br/>
+}

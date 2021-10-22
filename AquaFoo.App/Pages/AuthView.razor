@@ -1,0 +1,8 @@
+﻿@page "/authorize"
+@using System.Security.Claims
+
+<AuthorizeView>
+    <Authorized>
+        Your User ID: @context.User.FindFirstValue(ClaimTypes.NameIdentifier)
+    </Authorized>
+</AuthorizeView>
